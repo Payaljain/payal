@@ -6,3 +6,6 @@ psycopg2==2.5.1
 static==0.4
 wsgiref==0.1.2
 djangorestframework==3.1.0
+elasticsearch==1.4.0
+mysql==0.0.1
+MySQL-python==1.2.5
