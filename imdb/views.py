@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from .models import Movies,Genre
+from django.db.models import Q
 
 import json
 import sys
@@ -131,16 +132,14 @@ def search(request):
 	lo = int(page) * ITEMS_PER_PAGE
 	hi = (int(page) + 1) * ITEMS_PER_PAGE
 
-	term = term.lower()
-
-	terms = terms.split()
+	
+	terms = term.split()
 
 	matching_movies = Movies.objects.filter(Q(name__contains = term) | Q(director__contains = term) | Q(genres__name__contains = term))
-
 	if len(terms) > 0:
 		for term in terms:
 			temp = Movies.objects.filter(Q(name__contains = term) | Q(director__contains = term))
-			matching_movies.extend(temp)
+			list(matching_movies).extend((temp))
 
 	matching_movies = list(set(matching_movies))
 
