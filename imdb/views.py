@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from .models import Movies,Genre
 from django.db.models import Q
-
+from django.contrib.auth import authenticate, login
 import json
 import sys
 
@@ -18,6 +18,7 @@ ITEMS_PER_PAGE = 10
 
 @api_view(['POST'])
 def add_movie(request,format= None):
+
 	if request.user.is_superuser:
 		name = request.POST['name']
 		genres = request.POST['genres']
@@ -286,8 +287,9 @@ def login(request):
 	username = request.POST['username']
 	password = request.POST['password']
 	user = auth.authenticate(username = username, password = password)
-	response = Response('Could not log in')
 	if user is not None:
 		auth.login(request, user)
 		response = Response(reverse('get_movies'))
-		return response
+		return Responseresponse
+	else:
+		return Response("Couldnot log in")
